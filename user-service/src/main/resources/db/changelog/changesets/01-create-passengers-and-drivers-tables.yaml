@@ -1,0 +1,93 @@
+databaseChangeLog:
+  - changeSet:
+      id: 1
+      author: artyom
+      changes:
+        - createTable:
+            tableName: passengers
+            columns:
+              - column:
+                  name: id
+                  type: BIGINT
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: first_name
+                  type: VARCHAR(50)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: last_name
+                  type: VARCHAR(50)
+              - column:
+                  name: email
+                  type: VARCHAR(100)
+                  constraints:
+                    unique: true
+                    nullable: false
+              - column:
+                  name: phone
+                  type: VARCHAR(20)
+                  constraints:
+                    unique: true
+                    nullable: false
+              - column:
+                  name: rating
+                  type: DECIMAL(3, 2)
+                  constraints:
+                    nullable: false
+                  defaultValue: 5.0
+
+  - changeSet:
+      id: 2
+      author: artyom
+      changes:
+        - createTable:
+            tableName: drivers
+            columns:
+              - column:
+                  name: id
+                  type: BIGINT
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: first_name
+                  type: VARCHAR(50)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: last_name
+                  type: VARCHAR(50)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: email
+                  type: VARCHAR(100)
+                  constraints:
+                    unique: true
+                    nullable: false
+              - column:
+                  name: phone
+                  type: VARCHAR(20)
+                  constraints:
+                    unique: true
+                    nullable: false
+              - column:
+                  name: car_info
+                  type: VARCHAR(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: is_available
+                  type: BOOLEAN
+                  defaultValue: false
+              - column:
+                  name: rating
+                  type: DECIMAL(3, 2)
+                  constraints:
+                    nullable: false
+                  defaultValue: 5.0
