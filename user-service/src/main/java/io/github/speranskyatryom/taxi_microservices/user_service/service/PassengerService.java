@@ -2,7 +2,14 @@ package io.github.speranskyatryom.taxi_microservices.user_service.service;
 
 import io.github.speranskyatryom.taxi_microservices.user_service.dto.PassengerRegistrationRequest;
 import io.github.speranskyatryom.taxi_microservices.user_service.dto.PassengerResponse;
+import io.github.speranskyatryom.taxi_microservices.user_service.dto.PassengerUpdateRequest;
+
+import java.util.List;
 
 public interface PassengerService {
     PassengerResponse register(PassengerRegistrationRequest request);
+    PassengerResponse getById(Long id);
+    List<PassengerResponse> getAll();
+    PassengerResponse update(Long id, PassengerUpdateRequest request);
+    void delete(Long id);
 }
