@@ -15,19 +15,19 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class PassengerRegistrationRequest {
     @NotBlank(message = "First name is required")
-    @Size(max = 50, message = "First name must be less then 50 characters")
+    @Size(max = 50, message = "First name must be less than 50 characters")
     private String firstName;
 
-    @Size(max = 50, message = "Last name must be less then 50 characters")
+    @Size(max = 50, message = "Last name must be less than 50 characters")
     private String lastName;
 
     @NotBlank(message = "Email is required")
-    @Size(max = 100, message = "Email must be less then 100 characters")
+    @Size(max = 100, message = "Email must be less than 100 characters")
     @Email(message = "Invalid email format")
     private String email;
 
     @NotBlank(message = "Phone is required")
-    @Size(max = 20, message = "Phone must be less then 20 characters")
+    @Size(max = 20, message = "Phone must be less than 20 characters")
     @Pattern(
             regexp = "^\\+?[1-9]\\d{10,14}$",
             message = "Invalid phone number format"
