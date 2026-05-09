@@ -1,4 +1,4 @@
-package io.github.speranskyatryom.taxi_microservices.user_service.dto;
+package io.github.speranskyartyom.taxi_microservices.common.dto;
 
 import lombok.Builder;
 import lombok.Data;

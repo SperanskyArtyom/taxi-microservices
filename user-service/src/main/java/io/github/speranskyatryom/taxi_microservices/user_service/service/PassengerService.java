@@ -1,7 +1,7 @@
 package io.github.speranskyatryom.taxi_microservices.user_service.service;
 
 import io.github.speranskyatryom.taxi_microservices.user_service.dto.PassengerRegistrationRequest;
-import io.github.speranskyatryom.taxi_microservices.user_service.dto.PassengerResponse;
+import io.github.speranskyartyom.taxi_microservices.common.dto.PassengerResponse;
 import io.github.speranskyatryom.taxi_microservices.user_service.dto.PassengerUpdateRequest;
 
 import java.util.List;

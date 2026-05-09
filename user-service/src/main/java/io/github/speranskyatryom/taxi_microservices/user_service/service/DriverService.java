@@ -1,7 +1,7 @@
 package io.github.speranskyatryom.taxi_microservices.user_service.service;
 
 import io.github.speranskyatryom.taxi_microservices.user_service.dto.DriverRegistrationRequest;
-import io.github.speranskyatryom.taxi_microservices.user_service.dto.DriverResponse;
+import io.github.speranskyartyom.taxi_microservices.common.dto.DriverResponse;
 import io.github.speranskyatryom.taxi_microservices.user_service.dto.DriverUpdateRequest;
 
 import java.util.List;
