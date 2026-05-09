@@ -5,7 +5,7 @@ plugins {
 }
 
 allprojects {
-    group = "io.github.speranskyatryom.taxi-microservices"
+    group = "io.github.speranskyartyom.taxi-microservices"
     version = "0.0.1-SNAPSHOT"
 
     repositories {
@@ -27,7 +27,6 @@ subprojects {
     dependencies {
         if (name != "common") {
             implementation(project(":common"))
-            testImplementation(project(":common"))
             implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:3.0.2")
         }
         compileOnly("org.projectlombok:lombok")
