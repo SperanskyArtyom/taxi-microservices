@@ -38,7 +38,6 @@ public class DriverServiceImplementation implements DriverService {
                 .email(request.getEmail())
                 .phone(request.getPhone())
                 .carInfo(request.getCarInfo())
-                .isAvailable(false)
                 .build();
     }
 

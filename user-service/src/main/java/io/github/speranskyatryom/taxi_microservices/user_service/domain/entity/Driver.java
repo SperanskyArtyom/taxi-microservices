@@ -31,6 +31,7 @@ public class Driver {
     @Column(name = "car_info", nullable = false)
     private String carInfo;
 
+    @Builder.Default
     @Column(name = "is_available")
     private boolean isAvailable = false;
 
