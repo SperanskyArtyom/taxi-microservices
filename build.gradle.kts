@@ -25,6 +25,7 @@ subprojects {
     }
 
     dependencies {
+        implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:3.0.2")
         compileOnly("org.projectlombok:lombok")
         annotationProcessor("org.projectlombok:lombok")
         testImplementation("org.springframework.boot:spring-boot-starter-test")
