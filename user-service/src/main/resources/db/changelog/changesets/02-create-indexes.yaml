@@ -1,0 +1,47 @@
+databaseChangeLog:
+  - changeSet:
+      id: 1
+      author: artyom
+      changes:
+        - createIndex:
+            tableName: passengers
+            columns:
+              - column:
+                  name: email
+            indexName: idx_passenger_email
+            unique: true
+
+        - createIndex:
+            tableName: passengers
+            columns:
+              - column:
+                  name: phone
+            indexName: idx_passenger_phone
+            unique: true
+
+  - changeSet:
+      id: 2
+      author: artyom
+      changes:
+        - createIndex:
+            tableName: drivers
+            columns:
+              - column:
+                  name: email
+            indexName: idx_driver_email
+            unique: true
+
+        - createIndex:
+            tableName: drivers
+            columns:
+              - column:
+                  name: phone
+            indexName: idx_driver_phone
+            unique: true
+
+        - createIndex:
+            tableName: drivers
+            columns:
+              - column:
+                  name: is_available
+            indexName: idx_driver_available
