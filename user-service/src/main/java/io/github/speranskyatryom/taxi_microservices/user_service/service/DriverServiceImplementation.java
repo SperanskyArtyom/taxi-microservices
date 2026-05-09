@@ -2,7 +2,7 @@ package io.github.speranskyatryom.taxi_microservices.user_service.service;
 
 import io.github.speranskyatryom.taxi_microservices.user_service.domain.entity.Driver;
 import io.github.speranskyatryom.taxi_microservices.user_service.dto.DriverRegistrationRequest;
-import io.github.speranskyatryom.taxi_microservices.user_service.dto.DriverResponse;
+import io.github.speranskyartyom.taxi_microservices.common.dto.DriverResponse;
 import io.github.speranskyatryom.taxi_microservices.user_service.dto.DriverUpdateRequest;
 import io.github.speranskyatryom.taxi_microservices.user_service.exception.AlreadyExistsException;
 import io.github.speranskyatryom.taxi_microservices.user_service.exception.ResourceNotFoundException;

@@ -2,6 +2,7 @@ package io.github.speranskyatryom.taxi_microservices.user_service.controller;
 
 import io.github.speranskyatryom.taxi_microservices.user_service.dto.*;
 import io.github.speranskyatryom.taxi_microservices.user_service.service.DriverService;
+import io.github.speranskyartyom.taxi_microservices.common.dto.DriverResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;

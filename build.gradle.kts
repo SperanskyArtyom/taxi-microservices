@@ -27,6 +27,7 @@ subprojects {
     dependencies {
         if (name != "common") {
             implementation(project(":common"))
+            testImplementation(project(":common"))
             implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:3.0.2")
         }
         compileOnly("org.projectlombok:lombok")
