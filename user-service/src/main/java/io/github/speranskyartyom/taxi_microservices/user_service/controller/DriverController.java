@@ -1,5 +1,6 @@
 package io.github.speranskyartyom.taxi_microservices.user_service.controller;
 
+import io.github.speranskyartyom.taxi_microservices.common.dto.DriverIdResponse;
 import io.github.speranskyartyom.taxi_microservices.common.dto.DriverResponse;
 import io.github.speranskyartyom.taxi_microservices.user_service.dto.DriverRegistrationRequest;
 import io.github.speranskyartyom.taxi_microservices.user_service.dto.DriverUpdateRequest;
@@ -47,5 +48,12 @@ public class DriverController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void delete(@PathVariable Long id) {
         service.delete(id);
+    }
+
+    @PostMapping("/assign")
+    public DriverIdResponse assign() {
+        return DriverIdResponse.builder()
+                .id(service.assignAvailableDriver())
+                .build();
     }
 }

@@ -5,7 +5,8 @@ import io.github.speranskyartyom.taxi_microservices.user_service.domain.entity.D
 import io.github.speranskyartyom.taxi_microservices.user_service.dto.DriverRegistrationRequest;
 import io.github.speranskyartyom.taxi_microservices.user_service.dto.DriverUpdateRequest;
 import io.github.speranskyartyom.taxi_microservices.user_service.exception.AlreadyExistsException;
-import io.github.speranskyartyom.taxi_microservices.user_service.exception.ResourceNotFoundException;
+import io.github.speranskyartyom.taxi_microservices.user_service.exception.NoDriversAvailableException;
+import io.github.speranskyartyom.taxi_microservices.common.exceptions.ResourceNotFoundException;
 import io.github.speranskyartyom.taxi_microservices.user_service.repository.DriverRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -59,7 +60,7 @@ public class DriverServiceImplementation implements DriverService {
                         new ResourceNotFoundException("Driver with id: " + id + " not found")
                 );
 
-        Driver.DriverBuilder builder = driver.toBuilder();
+        Driver.DriverBuilder<?, ?> builder = driver.toBuilder();
         if (request.getFirstName() != null) builder.firstName(request.getFirstName());
         if (request.getLastName() != null) builder.lastName(request.getLastName());
         if (request.getEmail() != null) builder.email(request.getEmail());
@@ -91,6 +92,21 @@ public class DriverServiceImplementation implements DriverService {
             throw new ResourceNotFoundException("Driver with id: " + id + " not found");
         }
         repository.deleteById(id);
+    }
+
+    @Override
+    @Transactional
+    public Long assignAvailableDriver() {
+        Driver driver = repository.findFirstAvailable()
+                .orElseThrow(() -> new NoDriversAvailableException("No available drivers found"));
+
+        Driver busy = driver.toBuilder()
+                .isAvailable(false)
+                .build();
+
+        repository.save(busy);
+
+        return busy.getId();
     }
 
     private Driver mapToEntity(DriverRegistrationRequest request) {

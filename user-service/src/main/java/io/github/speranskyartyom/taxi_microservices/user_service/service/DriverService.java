@@ -18,4 +18,6 @@ public interface DriverService {
     void updateStatus(Long id, boolean isAvailable);
 
     void delete(Long id);
+
+    Long assignAvailableDriver();
 }
