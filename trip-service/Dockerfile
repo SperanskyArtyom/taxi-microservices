@@ -3,13 +3,16 @@ WORKDIR /app
 
 COPY build.gradle.kts .
 COPY settings.gradle.kts .
+COPY common/build.gradle.kts common/
+COPY trip-service/build.gradle.kts trip-service/
 
 RUN sed -i '/user-service/d' settings.gradle.kts
+RUN gradle dependencies --no-daemon
 
 COPY common common
 COPY trip-service trip-service
 
-RUN gradle :trip-service:bootJar --no-daemon
+RUN gradle :trip-service:bootJar -x test --no-daemon
 
 FROM eclipse-temurin:25-jre
 WORKDIR /app
