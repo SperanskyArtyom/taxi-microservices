@@ -25,6 +25,8 @@ app:
   kafka:
     topics:
       notification: "notification-events"
+  pricing:
+    fare-per-km: 50.0
 
 user-service:
   url: ${USER_SERVICE_URL:http://localhost:8081}

@@ -24,18 +24,17 @@ import java.util.List;
 @RequiredArgsConstructor
 @Slf4j
 public class TripServiceImplementation implements TripService {
-    private static final BigDecimal BASE_FARE = BigDecimal.valueOf(100.0);
-
     private final TripRepository repository;
     private final UserServiceClient userServiceClient;
     private final NotificationKafkaProducer notificationKafkaProducer;
+    private final PricingService pricingService;
 
     @Override
     @Transactional
     public TripResponse create(TripCreateRequest request) {
         userServiceClient.getPassenger(request.getPassengerId());
 
-        BigDecimal price = calculatePrice(request.getOrigin(), request.getDestination());
+        BigDecimal price = pricingService.calculatePrice(request.getOrigin(), request.getDestination());
         Long driverId = null;
         TripStatus status = TripStatus.CREATED;
 
@@ -198,11 +197,6 @@ public class TripServiceImplementation implements TripService {
                 .build();
 
         notificationKafkaProducer.sendNotificationEvent(event);
-    }
-
-    private BigDecimal calculatePrice(String from, String to) {
-        //TODO: реализовать правильный расчёт цены
-        return BASE_FARE.add(BigDecimal.valueOf((from.length() + to.length()) * 5.0));
     }
 
     private TripResponse mapToResponse(Trip trip) {
