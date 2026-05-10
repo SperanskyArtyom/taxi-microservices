@@ -1,6 +1,8 @@
 package io.github.speranskyartyom.taxi_microservices.trip_service.service;
 
 import feign.FeignException;
+import io.github.speranskyartyom.taxi_microservices.common.domain.entity.constants.RecipientType;
+import io.github.speranskyartyom.taxi_microservices.common.dto.NotificationEvent;
 import io.github.speranskyartyom.taxi_microservices.common.exceptions.ResourceNotFoundException;
 import io.github.speranskyartyom.taxi_microservices.trip_service.client.UserServiceClient;
 import io.github.speranskyartyom.taxi_microservices.trip_service.domain.constant.TripStatus;
@@ -8,6 +10,7 @@ import io.github.speranskyartyom.taxi_microservices.trip_service.domain.entity.T
 import io.github.speranskyartyom.taxi_microservices.trip_service.dto.TripCreateRequest;
 import io.github.speranskyartyom.taxi_microservices.trip_service.dto.TripResponse;
 import io.github.speranskyartyom.taxi_microservices.trip_service.repository.TripRepository;
+import io.github.speranskyartyom.taxi_microservices.trip_service.service.kafka.NotificationKafkaProducer;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -25,6 +28,7 @@ public class TripServiceImplementation implements TripService {
 
     private final TripRepository repository;
     private final UserServiceClient userServiceClient;
+    private final NotificationKafkaProducer notificationKafkaProducer;
 
     @Override
     @Transactional
@@ -59,6 +63,35 @@ public class TripServiceImplementation implements TripService {
                 .build();
 
         Trip savedTrip = repository.save(trip);
+
+        NotificationEvent event;
+        if (driverId == null) {
+            event = NotificationEvent.builder()
+                    .tripId(savedTrip.getId())
+                    .recipientType(RecipientType.PASSENGER)
+                    .recipientId(savedTrip.getPassengerId())
+                    .message("Ваш заказ принят! Ищем водителя.")
+                    .build();
+
+        } else {
+            event = NotificationEvent.builder()
+                    .tripId(savedTrip.getId())
+                    .recipientType(RecipientType.PASSENGER)
+                    .recipientId(savedTrip.getPassengerId())
+                    .message("Ваш заказ принят! Водитель уже спешит к вам!")
+                    .build();
+
+            notificationKafkaProducer.sendNotificationEvent(event);
+
+            event = NotificationEvent.builder()
+                    .tripId(savedTrip.getId())
+                    .recipientType(RecipientType.DRIVER)
+                    .recipientId(driverId)
+                    .message("Вам назначен заказ! Пассажир ждёт вас по адресу " + savedTrip.getOrigin() + ".")
+                    .build();
+
+        }
+        notificationKafkaProducer.sendNotificationEvent(event);
         return mapToResponse(savedTrip);
     }
 
@@ -71,6 +104,24 @@ public class TripServiceImplementation implements TripService {
                     .status(TripStatus.ACCEPTED)
                     .build();
             repository.save(updatedTrip);
+
+            NotificationEvent event = NotificationEvent.builder()
+                    .tripId(updatedTrip.getId())
+                    .recipientType(RecipientType.PASSENGER)
+                    .recipientId(updatedTrip.getPassengerId())
+                    .message("На ваш заказ назначен водитель!")
+                    .build();
+
+            notificationKafkaProducer.sendNotificationEvent(event);
+
+            event = NotificationEvent.builder()
+                    .tripId(updatedTrip.getId())
+                    .recipientType(RecipientType.DRIVER)
+                    .recipientId(driverId)
+                    .message("Вам назначен заказ! Пассажир ждёт вас по адресу " + updatedTrip.getOrigin() + ".")
+                    .build();
+
+            notificationKafkaProducer.sendNotificationEvent(event);
             log.info("Driver {} successfully assigned for trip {}", driverId, trip.getId());
         } catch (FeignException.Conflict _) {
         }
@@ -103,6 +154,24 @@ public class TripServiceImplementation implements TripService {
         if (status != trip.getStatus()) {
             Trip updated = trip.toBuilder().status(status).build();
             repository.save(updated);
+
+            NotificationEvent event = NotificationEvent.builder()
+                    .tripId(updated.getId())
+                    .recipientType(RecipientType.PASSENGER)
+                    .recipientId(updated.getPassengerId())
+                    .message("Статус вашей поездки изменился на " + status)
+                    .build();
+
+            notificationKafkaProducer.sendNotificationEvent(event);
+
+            event = NotificationEvent.builder()
+                    .tripId(updated.getId())
+                    .recipientType(RecipientType.DRIVER)
+                    .recipientId(updated.getDriverId())
+                    .message("Статус вашей поездки изменился на " + status)
+                    .build();
+
+            notificationKafkaProducer.sendNotificationEvent(event);
         }
     }
 
@@ -115,6 +184,15 @@ public class TripServiceImplementation implements TripService {
 
         Trip rated = trip.toBuilder().rating(rating).build();
         repository.save(rated);
+
+        NotificationEvent event = NotificationEvent.builder()
+                .tripId(rated.getId())
+                .recipientType(RecipientType.DRIVER)
+                .recipientId(rated.getDriverId())
+                .message("Вашей поездке поставили оценку " + rating)
+                .build();
+
+        notificationKafkaProducer.sendNotificationEvent(event);
     }
 
     private BigDecimal calculatePrice(String from, String to) {
