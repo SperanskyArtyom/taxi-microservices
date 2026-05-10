@@ -13,6 +13,15 @@ spring:
       ddl-auto: validate
     show-sql: false
     open-in-view: false
+  cache:
+    type: redis
+    redis:
+      time-to-live: 60000
+      cache-null-values: false
+  data:
+    redis:
+      host: ${SPRING_REDIS_HOST:localhost}
+      port: ${SPRING_REDIS_PORT:6379}
 
 logging:
   level:

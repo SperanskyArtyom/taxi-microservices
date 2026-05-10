@@ -33,6 +33,13 @@ services:
             /opt/kafka/bin/kafka-server-start.sh /opt/kafka/config/kraft/server.properties
           "
 
+  redis:
+    image: redis:7.4-alpine
+    container_name: taxi-redis
+    ports:
+      - "6379:6379"
+    restart: always
+
   user-service:
     build:
       context: .
@@ -46,9 +53,12 @@ services:
       - SPRING_DATASOURCE_PASSWORD=password
       - SPRING_JPA_HIBERNATE_DDL_AUTO=validate
       - SPRING_KAFKA_BOOTSTRAP_SERVERS=kafka:9092
+      - SPRING_REDIS_HOST=redis
+      - SPRING_REDIS_PORT=6379
     depends_on:
       - postgres
       - kafka
+      - redis
 
   trip-service:
     build:
