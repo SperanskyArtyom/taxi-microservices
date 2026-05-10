@@ -1,0 +1,11 @@
+databaseChangeLog:
+  - changeSet:
+      id: 1
+      author: artyom
+      changes:
+        - createIndex:
+            tableName: trips
+            indexName: idx_trips_created_at
+            columns:
+              - column:
+                  name: created_at
