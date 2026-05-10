@@ -17,4 +17,3 @@ spring:
 logging:
   level:
     io.github.speranskyartyom.taxi_microservices: INFO
-    io.github.speranskyartyom.taxi_microservices.trip_service.client: DEBUG
