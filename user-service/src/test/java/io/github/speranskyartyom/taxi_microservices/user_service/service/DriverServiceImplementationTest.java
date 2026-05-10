@@ -4,7 +4,7 @@ import io.github.speranskyartyom.taxi_microservices.common.dto.DriverResponse;
 import io.github.speranskyartyom.taxi_microservices.user_service.domain.entity.Driver;
 import io.github.speranskyartyom.taxi_microservices.user_service.dto.DriverRegistrationRequest;
 import io.github.speranskyartyom.taxi_microservices.user_service.exception.AlreadyExistsException;
-import io.github.speranskyartyom.taxi_microservices.user_service.exception.ResourceNotFoundException;
+import io.github.speranskyartyom.taxi_microservices.common.exceptions.ResourceNotFoundException;
 import io.github.speranskyartyom.taxi_microservices.user_service.repository.DriverRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

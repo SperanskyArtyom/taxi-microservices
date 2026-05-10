@@ -5,7 +5,7 @@ import io.github.speranskyartyom.taxi_microservices.user_service.domain.entity.P
 import io.github.speranskyartyom.taxi_microservices.user_service.dto.PassengerRegistrationRequest;
 import io.github.speranskyartyom.taxi_microservices.user_service.dto.PassengerUpdateRequest;
 import io.github.speranskyartyom.taxi_microservices.user_service.exception.AlreadyExistsException;
-import io.github.speranskyartyom.taxi_microservices.user_service.exception.ResourceNotFoundException;
+import io.github.speranskyartyom.taxi_microservices.common.exceptions.ResourceNotFoundException;
 import io.github.speranskyartyom.taxi_microservices.user_service.repository.PassengerRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
