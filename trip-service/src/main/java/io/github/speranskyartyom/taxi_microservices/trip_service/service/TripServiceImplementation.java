@@ -155,6 +155,11 @@ public class TripServiceImplementation implements TripService {
             Trip updated = trip.toBuilder().status(status).build();
             repository.save(updated);
 
+            if (status == TripStatus.FINISHED) userServiceClient.markAsAvailable(trip.getDriverId(), true);
+            else if (status == TripStatus.CANCELLED && trip.getDriverId() != null) {
+                userServiceClient.markAsAvailable(trip.getDriverId(), true);
+            }
+
             NotificationEvent event = NotificationEvent.builder()
                     .tripId(updated.getId())
                     .recipientType(RecipientType.PASSENGER)
