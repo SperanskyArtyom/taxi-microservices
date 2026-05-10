@@ -5,17 +5,10 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.math.BigDecimal;
-
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class PassengerResponse {
+public class DriverIdResponse {
     private Long id;
-    private String firstName;
-    private String lastName;
-    private String email;
-    private String phone;
-    private BigDecimal rating;
 }
