@@ -38,7 +38,9 @@ databaseChangeLog:
                     nullable: false
               - column:
                   name: price
-                  type: DECIMAL(10, 2)
+                  type: DECIMAL(19, 2)
+                  constraints:
+                    nullable: false
               - column:
                   name: rating
                   type: INT
