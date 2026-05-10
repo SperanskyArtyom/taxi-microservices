@@ -10,14 +10,20 @@ import io.github.speranskyartyom.taxi_microservices.common.exceptions.ResourceNo
 import io.github.speranskyartyom.taxi_microservices.user_service.repository.DriverRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class DriverServiceImplementation implements DriverService {
     private final DriverRepository repository;
+    private final StringRedisTemplate redisTemplate;
+
+    private static final String DRIVERS_CACHE_KEY = "available_drivers";
 
     @Override
     @Transactional
@@ -82,6 +88,15 @@ public class DriverServiceImplementation implements DriverService {
         if (isAvailable != driver.isAvailable()) {
             Driver updated = driver.toBuilder().isAvailable(isAvailable).build();
             repository.save(updated);
+
+            if (isAvailable) {
+                redisTemplate.opsForSet().add(DRIVERS_CACHE_KEY, String.valueOf(id));
+                log.info("Driver {} added to cache", id);
+            }
+            else {
+                redisTemplate.opsForSet().remove(DRIVERS_CACHE_KEY, String.valueOf(id));
+                log.info("Driver {} removed from cache", id);
+            }
         }
     }
 
@@ -97,16 +112,21 @@ public class DriverServiceImplementation implements DriverService {
     @Override
     @Transactional
     public Long assignAvailableDriver() {
-        Driver driver = repository.findFirstAvailable()
-                .orElseThrow(() -> new NoDriversAvailableException("No available drivers found"));
+        String driverIdStr = redisTemplate.opsForSet().pop(DRIVERS_CACHE_KEY);
+        Long driverId;
 
-        Driver busy = driver.toBuilder()
-                .isAvailable(false)
-                .build();
+        if (driverIdStr == null) {
+            Driver driver = repository.findFirstAvailable()
+                    .orElseThrow(() -> new NoDriversAvailableException("No available drivers found"));
+            driverId = driver.getId();
+        } else {
+            log.info("Driver {} assigned from cache", driverIdStr);
+            driverId = Long.parseLong(driverIdStr);
+        }
 
-        repository.save(busy);
+        repository.markAsBusy(driverId);
 
-        return busy.getId();
+        return driverId;
     }
 
     private Driver mapToEntity(DriverRegistrationRequest request) {
