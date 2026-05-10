@@ -11,4 +11,10 @@ spring:
   jpa:
     hibernate:
       ddl-auto: validate
-    show-sql: true
+    show-sql: false
+    open-in-view: false
+
+logging:
+  level:
+    io.github.speranskyartyom.taxi_microservices: INFO
+    io.github.speranskyartyom.taxi_microservices.trip_service.client: DEBUG

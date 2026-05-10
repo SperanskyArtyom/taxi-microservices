@@ -11,7 +11,8 @@ spring:
   jpa:
     hibernate:
       ddl-auto: validate
-    show-sql: true
+    show-sql: false
+    open-in-view: false
   kafka:
     bootstrap-servers: ${SPRING_KAFKA_BOOTSTRAP_SERVERS:localhost:9092}
     producer:
@@ -24,5 +25,11 @@ spring:
       value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
       properties:
         spring.json.trusted.packages: "io.github.speranskyartyom.*"
-  user-service:
-    url: ${USER_SERVICE_URL:http://localhost:8081}
+
+user-service:
+  url: ${USER_SERVICE_URL:http://localhost:8081}
+
+logging:
+  level:
+    io.github.speranskyartyom.taxi_microservices: INFO
+    io.github.speranskyartyom.taxi_microservices.trip_service.client: DEBUG
