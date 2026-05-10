@@ -7,6 +7,8 @@ COPY common/build.gradle.kts common/
 COPY user-service/build.gradle.kts user-service/
 
 RUN sed -i '/trip-service/d' settings.gradle.kts
+RUN sed -i '/notification-service/d' settings.gradle.kts
+
 RUN gradle dependencies --no-daemon
 
 COPY common common
