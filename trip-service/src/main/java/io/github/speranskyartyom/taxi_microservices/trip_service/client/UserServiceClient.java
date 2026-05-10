@@ -4,9 +4,7 @@ import io.github.speranskyartyom.taxi_microservices.common.dto.DriverIdResponse;
 import io.github.speranskyartyom.taxi_microservices.common.dto.PassengerResponse;
 import io.github.speranskyartyom.taxi_microservices.trip_service.config.FeignConfig;
 import org.springframework.cloud.openfeign.FeignClient;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 
 @FeignClient(name = "user-service", url = "${user-service.url}", configuration = FeignConfig.class)
 public interface UserServiceClient {
@@ -15,4 +13,7 @@ public interface UserServiceClient {
 
     @PostMapping("/api/v1/drivers/assign")
     DriverIdResponse assignDriver();
+
+    @PatchMapping("/api/v1/drivers/{id}/status")
+    void markAsAvailable(@PathVariable Long id, @RequestParam boolean isAvailable);
 }
