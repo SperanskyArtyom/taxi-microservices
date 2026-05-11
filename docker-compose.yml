@@ -55,6 +55,8 @@ services:
       - SPRING_KAFKA_BOOTSTRAP_SERVERS=kafka:9092
       - SPRING_REDIS_HOST=redis
       - SPRING_REDIS_PORT=6379
+      - INTERNAL_API_KEY=taxi-internal-secret-key
+      - APP_JWT_SECRET=your-very-long-and-safe-secret-key-at-least-32-chars
     depends_on:
       - postgres
       - kafka
@@ -73,6 +75,8 @@ services:
       - SPRING_DATASOURCE_PASSWORD=password
       - SPRING_KAFKA_BOOTSTRAP_SERVERS=kafka:9092
       - USER_SERVICE_URL=http://user-service:8080
+      - INTERNAL_API_KEY=taxi-internal-secret-key
+      - APP_JWT_SECRET=your-very-long-and-safe-secret-key-at-least-32-chars
     depends_on:
       - postgres
       - kafka
@@ -89,6 +93,8 @@ services:
       - SPRING_DATASOURCE_USERNAME=user
       - SPRING_DATASOURCE_PASSWORD=password
       - SPRING_KAFKA_BOOTSTRAP_SERVERS=kafka:9092
+      - INTERNAL_API_KEY=taxi-internal-secret-key
+      - APP_JWT_SECRET=your-very-long-and-safe-secret-key-at-least-32-chars
     depends_on:
       - postgres
       - kafka

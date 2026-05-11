@@ -23,6 +23,12 @@ spring:
       host: ${SPRING_REDIS_HOST:localhost}
       port: ${SPRING_REDIS_PORT:6379}
 
+app:
+  internal:
+    api-key: ${INTERNAL_API_KEY:local-secret-key}
+  jwt:
+    secret: ${APP_JWT_SECRET:your-very-long-and-safe-secret-key-at-least-32-chars}
+
 logging:
   level:
     io.github.speranskyartyom.taxi_microservices: INFO

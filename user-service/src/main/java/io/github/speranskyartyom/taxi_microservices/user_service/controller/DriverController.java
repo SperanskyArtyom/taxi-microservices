@@ -8,6 +8,7 @@ import io.github.speranskyartyom.taxi_microservices.user_service.service.DriverS
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -25,26 +26,31 @@ public class DriverController {
     }
 
     @GetMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN') or #id == authentication.principal.id")
     public DriverResponse getById(@PathVariable Long id) {
         return service.getById(id);
     }
 
     @GetMapping
+    @PreAuthorize("hasRole('ADMIN')")
     public List<DriverResponse> getAll() {
         return service.getAll();
     }
 
     @PatchMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN') or #id == authentication.principal.id")
     public DriverResponse update(@PathVariable Long id, @Valid @RequestBody DriverUpdateRequest request) {
         return service.update(id, request);
     }
 
     @PatchMapping("/{id}/status")
+    @PreAuthorize("hasRole('ADMIN') or #id == authentication.principal.id")
     public void changeStatus(@PathVariable Long id, @RequestParam boolean isAvailable) {
         service.updateStatus(id, isAvailable);
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN') or #id == authentication.principal.id")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void delete(@PathVariable Long id) {
         service.delete(id);

@@ -27,6 +27,10 @@ app:
       notification: "notification-events"
   pricing:
     fare-per-km: 50.0
+  internal:
+    api-key: ${INTERNAL_API_KEY:local-secret-key}
+  jwt:
+    secret: ${APP_JWT_SECRET:your-very-long-and-safe-secret-key-at-least-32-chars}
 
 user-service:
   url: ${USER_SERVICE_URL:http://localhost:8081}
