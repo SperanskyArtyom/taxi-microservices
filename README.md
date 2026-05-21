@@ -27,9 +27,15 @@
 
 ### Запуск
 Сборка и запуск всех контейнеров одной командой из корневой директории:
-```bash
-docker-compose up -d --build
-```
+* Windows
+  ```powershell
+  docker-compose up -d --build
+  ```
+* Linux
+  ```bash
+  docker compose up -d --build
+  ```
+
 После запуска сервисы будут доступны по адресам:
 * **User Service**: `http://localhost:8081`
 * **Trip Service**: `http://localhost:8082`
